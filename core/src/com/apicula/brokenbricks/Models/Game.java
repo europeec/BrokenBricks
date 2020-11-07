@@ -1,25 +1,19 @@
 package com.apicula.brokenbricks.Models;
 
-import com.apicula.brokenbricks.AdditionalFiles.Const;
 import com.apicula.brokenbricks.GameObjects.Brick;
 import com.apicula.brokenbricks.GameObjects.Bullet;
 import com.apicula.brokenbricks.GameObjects.MainPerson;
 import com.apicula.brokenbricks.AdditionalFiles.StartAnnotation;
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 
 public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
 	MainPerson main;
 	Bullet bullet;
 	Brick[] bricks;
 	ContactChecker cc;
-	Stage stage;
-	Const CONST;
 	SoundClass music;
 	StartAnnotation startAnnotation;
 	Maps maps;
@@ -28,7 +22,7 @@ public class Game extends ApplicationAdapter {
 	private boolean isGameStarted = false;
 	public boolean isLose = false;
 	public boolean isRestart = false;
-	public boolean wasRendering = false;
+	public boolean isOffline = true;
 
 	public Game(SpriteBatch batch) {
 		this.batch = batch;
@@ -45,21 +39,8 @@ public class Game extends ApplicationAdapter {
 
 
 	public void render () {
-		if (!music.isPlaying) {
-			music.play();
-			music.setVolume(user.volume);
-		}
-		if (user.wasChanging) {
-			bricks = maps.create();
-			cc = new ContactChecker(main, bullet, bricks);
-			music.setVolume(user.volume);
-			user.wasChanging = false;
-		}
-		if (isRestart) {
-			create();
-			isRestart = false;
-		}
-		isGameStarted = startAnnotation.isAnimationEnded;
+		checkUpdate();
+
 		main.draw();
 		for (int i = 0; i < bricks.length - 1; i++) {
 			bricks[i].draw();
@@ -81,5 +62,35 @@ public class Game extends ApplicationAdapter {
 			music.dispose();
 			isLose = true;
 		}
+	}
+
+	public int getBulletPosX () {
+		return bullet.posX;
+	}
+
+	public int getBulletPosY () {
+		return bullet.posY;
+	}
+
+	public int getMainPosX () {
+		return main.posX;
+	}
+
+	private void checkUpdate() {
+		if (!music.isPlaying) {
+			music.play();
+			music.setVolume(user.volume);
+		}
+		if (user.wasChanging) {
+			bricks = maps.create();
+			cc = new ContactChecker(main, bullet, bricks);
+			music.setVolume(user.volume);
+			user.wasChanging = false;
+		}
+		if (isRestart) {
+			create();
+			isRestart = false;
+		}
+		isGameStarted = startAnnotation.isAnimationEnded;
 	}
 }

@@ -1,7 +1,9 @@
 package com.apicula.brokenbricks.AdditionalFiles;
 
 public class Const {
-    public static String URLGAME = "";
+    public static String URLSTART = "http://127.0.0.1:5000/start";
+    public static String URLGAME = "http://127.0.0.1:5000/game";
+
 
     public static final int WIDTHMAIN = 135;
     public static final int HEIGHTMAIN = 39;
