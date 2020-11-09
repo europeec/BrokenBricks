@@ -22,7 +22,7 @@ public class Game extends ApplicationAdapter {
 	private boolean isGameStarted = false;
 	public boolean isLose = false;
 	public boolean isRestart = false;
-	public boolean isOffline = true;
+	public boolean isWin = false;
 
 	public Game(SpriteBatch batch) {
 		this.batch = batch;
@@ -39,6 +39,7 @@ public class Game extends ApplicationAdapter {
 
 
 	public void render () {
+//		для измения карты или громкости
 		checkUpdate();
 
 		main.draw();
@@ -57,6 +58,11 @@ public class Game extends ApplicationAdapter {
 		main.update();
 		bullet.move();
 		cc.update();
+
+		if (cc.isWin) {
+			music.dispose();
+			isWin = true;
+		}
 
 		if (cc.isLose) {
 			music.dispose();

@@ -16,7 +16,6 @@ public class Server {
     private static String EnemyNickname;
     private static String queue;
     private static String[] splited;
-
     private static UserDefaults user;
 
     public static boolean isGame = false;
@@ -26,14 +25,14 @@ public class Server {
 
     private static boolean isStartRequestSending = false;
 
-    public static void startRequest () {
+    public static void startRequest() {
         if (!isStartRequestSending) {
             isStartRequestSending = true;
             Net.HttpRequest req = new Net.HttpRequest(Net.HttpMethods.GET);
             req.setUrl(CONST.URLSTART);
-            req.setContent( "name=" + user.nickname);
+            req.setContent("name=" + user.nickname);
 
-            Gdx.net.sendHttpRequest (req, new Net.HttpResponseListener() {
+            Gdx.net.sendHttpRequest(req, new Net.HttpResponseListener() {
                 public void handleHttpResponse(Net.HttpResponse httpResponse) {
                     String status = httpResponse.getResultAsString();
                     //do stuff here based on response
@@ -63,12 +62,12 @@ public class Server {
         }
     }
 
-    public static void gameRequest (int BulletPosX, int BulletPosY, int MainPosX) {
+    public static void gameRequest(int BulletPosX, int BulletPosY, int MainPosX) {
         Net.HttpRequest req = new Net.HttpRequest(Net.HttpMethods.GET);
         req.setUrl(CONST.URLGAME);
-        req.setContent( "room_id=" + RoomID + "&MainPosX=" + MainPosX + "&BulletPosX=" + BulletPosX + "&BulletPosY=" + BulletPosY + "&Q=" + queue);
+        req.setContent("room_id=" + RoomID + "&MainPosX=" + MainPosX + "&BulletPosX=" + BulletPosX + "&BulletPosY=" + BulletPosY + "&Q=" + queue);
 
-        Gdx.net.sendHttpRequest (req, new Net.HttpResponseListener() {
+        Gdx.net.sendHttpRequest(req, new Net.HttpResponseListener() {
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 String status = httpResponse.getResultAsString();
                 splited = status.split(" ");

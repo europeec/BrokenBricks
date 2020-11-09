@@ -5,13 +5,13 @@ import com.apicula.brokenbricks.GameObjects.Bullet;
 import com.apicula.brokenbricks.GameObjects.MainPerson;
 import com.apicula.brokenbricks.Models.ContactChecker;
 import com.apicula.brokenbricks.Models.Game;
-import com.apicula.brokenbricks.Models.Menu;
+import com.apicula.brokenbricks.Screens.Menu;
+import com.apicula.brokenbricks.Screens.ScreenAfterGame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class BrokenBricks extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -22,13 +22,13 @@ public class BrokenBricks extends ApplicationAdapter {
 	Game game;
 	Menu menu;
 	Server server;
-	Texture test;
+	ScreenAfterGame postScreen;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		game = new Game(batch);
 		menu = new Menu(batch);
-		test = new Texture("Resources/GameObjectImages/bullet.png");
+		postScreen = new ScreenAfterGame(batch);
 		game.create();
 	}
 
@@ -38,21 +38,23 @@ public class BrokenBricks extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
-
-
-		if (game.isLose) {
+		if (postScreen.isBackToMenu) {
 			menu.isGame = false;
+			postScreen.isBackToMenu = false;
 			game.isLose = false;
 			game.isRestart = true;
 		}
+		if (postScreen.isPlayAgain) {
+			game.isRestart = true;
+			game.isLose = false;
+			postScreen.isPlayAgain = false;
+		}
+
 		if (menu.isGame) {
-//			game.render();
-			if (server.isGame) {
-				server.gameRequest(game.getBulletPosX(), game.getBulletPosY(), game.getMainPosX());
-				game.render();
-				batch.draw(test, server.bulletPosX, 400 + server.bulletPosY);
+			if (game.isLose  || game.isWin) {
+				postScreen.draw(game.isWin);
 			} else {
-				server.startRequest();
+				game.render();
 			}
 		} else {
 			menu.show();

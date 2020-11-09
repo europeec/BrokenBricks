@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 
 public class ContactChecker {
     public boolean isLose = false;
+    public boolean isWin;
 
     private MainPerson main;
     private Bullet bullet;
@@ -21,14 +22,18 @@ public class ContactChecker {
         this.main = main;
         this.bullet = bullet;
         this.bricks = bricks;
+        isWin = false;
         sound = Gdx.audio.newSound(Gdx.files.internal("Sound/crack.wav"));
     }
 
     public void update() {
         if (bullet.posY < CONST.HEIGHTMAIN) {
+            if (isWin) {
+                bullet.stop();
+            }
             if (isContactWithMain()) {
                 if (isLose) {
-                    //				LOSE
+//		    		LOSE
                     bullet.stop();
                 }
             }
@@ -66,6 +71,8 @@ public class ContactChecker {
 
     public boolean isContactWithBricks() {
         if (bullet.posY > 250) {
+//          Счетчик разрушенных кирпичиков, для проверки победы
+            int t_counter = 0;
             for (int i = 0; i < bricks.length - 1; i++) {
                 if (!bricks[i].isDestroyed) {
                    if (((bullet.posY + CONST.BALLSIZE == bricks[i].posY) != (bullet.posY == bricks[i].posY + CONST.HEIGHTBRICK)) &&
@@ -87,7 +94,12 @@ public class ContactChecker {
                             return true;
                         }
                     }
+                } else {
+                    t_counter++;
                 }
+            }
+            if (t_counter == bricks.length - 1) {
+                isWin = true;
             }
         }
         return false;

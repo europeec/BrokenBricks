@@ -1,6 +1,7 @@
-package com.apicula.brokenbricks.Models;
+package com.apicula.brokenbricks.Screens;
 
 import com.apicula.brokenbricks.AdditionalFiles.VolumeSlider;
+import com.apicula.brokenbricks.Models.UserDefaults;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
