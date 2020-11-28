@@ -16,20 +16,78 @@ public class Maps {
         this.batch = batch;
     }
 
-//  Генерация карты кирпичиков
     public Brick[] create() {
         if (user.isRandomlyMap) {
-            Random random = new Random();
-            if (random.nextInt(10) > 5) {
-                bricks = advanced();
-            } else {
-                bricks = standard();
-            }
+            bricks = generate();
+        } else if (user.isAdvancedMap) {
+            bricks = advanced();
         } else {
-            if (user.isAdvancedMap) {
-                bricks = advanced();
-            } else {
-                bricks = standard();
+            bricks = standard();
+        }
+
+        return bricks;
+    }
+
+
+//  Генерация карты кирпичиков
+    private Brick[] generate() {
+        Random rand = new Random();
+        int stepsBlock = rand.nextInt(2) + 4;
+        int[] stepsCountsBlocks = new int[stepsBlock];
+        boolean[] isMiddleBlocks = new boolean[stepsBlock];
+        int counter = 0;
+
+        for (int i = 0; i < stepsBlock; i++) {
+            stepsCountsBlocks[i] = rand.nextInt(3) * 2;
+            isMiddleBlocks[i] = rand.nextBoolean();
+            counter += stepsCountsBlocks[i];
+            if (isMiddleBlocks[i]) {
+                counter++;
+            }
+        }
+
+        bricks = new Brick[counter + 1];
+        counter = 0;
+
+        for (int i = 0; i < stepsBlock; i++){
+            switch (stepsCountsBlocks[i]) {
+                case 0:
+                    if (isMiddleBlocks[i]) {
+                        bricks[counter] = new Brick(batch, 2 * CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                        counter ++;
+                    }
+                    break;
+                case 2:
+                    boolean isLeading = rand.nextBoolean();
+                    if (isLeading) {
+                        bricks[counter] = new Brick(batch, 0, 300 + (i * CONST.HEIGHTBRICK));
+                        bricks[counter + 1] = new Brick(batch, 4 * CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                    } else {
+                        bricks[counter] = new Brick(batch, CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                        bricks[counter + 1] = new Brick(batch, 3 * CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                    }
+                    counter += 2;
+                    if (isMiddleBlocks[i]) {
+                        bricks[counter] = new Brick(batch, 2 * CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                        counter ++;
+                    }
+                    break;
+                case 4:
+
+                    bricks[counter] = new Brick(batch, 0, 300 + (i * CONST.HEIGHTBRICK));
+                    bricks[counter + 1] = new Brick(batch, 4 * CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                    bricks[counter + 2] = new Brick(batch, CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                    bricks[counter + 3] = new Brick(batch, 3 * CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                    counter += 4;
+
+                    if (isMiddleBlocks[i]) {
+                        bricks[counter] = new Brick(batch, 2 * CONST.WIDTHBRICK, 300 + (i * CONST.HEIGHTBRICK));
+                        counter ++;
+                    }
+                    break;
+                default:
+                    System.out.println(":: err generation map");
+                    break;
             }
         }
         return bricks;

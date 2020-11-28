@@ -43,9 +43,11 @@ public class Game extends ApplicationAdapter {
 		checkUpdate();
 
 		main.draw();
+
 		for (int i = 0; i < bricks.length - 1; i++) {
 			bricks[i].draw();
 		}
+
 		bullet.draw();
 		if (isGameStarted) {
 			update();

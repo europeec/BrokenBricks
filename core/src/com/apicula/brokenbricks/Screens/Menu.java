@@ -91,9 +91,11 @@ public class Menu implements Screen {
                                 case 1:
                                     user.isRandomlyMap = true;
                                     user.isAdvancedMap = false;
+                                    break;
                                 case 2:
                                     user.isRandomlyMap = false;
                                     user.isAdvancedMap = false;
+                                    break;
                             }
                             user.wasChanging = true;
                         }

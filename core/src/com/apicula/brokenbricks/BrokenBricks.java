@@ -43,11 +43,14 @@ public class BrokenBricks extends ApplicationAdapter {
 			postScreen.isBackToMenu = false;
 			game.isLose = false;
 			game.isRestart = true;
+			game.isWin = false;
 		}
 		if (postScreen.isPlayAgain) {
 			game.isRestart = true;
+			game.isWin = false;
 			game.isLose = false;
 			postScreen.isPlayAgain = false;
+			menu.isGame = true;
 		}
 
 		if (menu.isGame) {
