@@ -33,13 +33,11 @@ public class ContactChecker {
             }
             if (isContactWithMain()) {
                 if (isLose) {
-//		    		LOSE
                     bullet.stop();
                 }
             }
         } else if (bullet.posY > 250) {
             if (isContactWithBricks()) {
-                bricks[indexDestroyed].isDestroyed = true;
                 sound.play(1);
             }
         }
@@ -70,37 +68,35 @@ public class ContactChecker {
     }
 
     public boolean isContactWithBricks() {
-        if (bullet.posY > 250) {
-//          Счетчик разрушенных кирпичиков, для проверки победы
-            int t_counter = 0;
-            for (int i = 0; i < bricks.length - 1; i++) {
-                if (!bricks[i].isDestroyed) {
-                   if (((bullet.posY + CONST.BALLSIZE == bricks[i].posY) != (bullet.posY == bricks[i].posY + CONST.HEIGHTBRICK)) &&
-                        bullet.posX + (int) CONST.BALLSIZE/2 >= bricks[i].posX &&
-                        bullet.posX + (int) CONST.BALLSIZE/2 <= bricks[i].posX + CONST.WIDTHBRICK) {
-                        indexDestroyed = i;
-                        bullet.invert();
+//      Счетчик разрушенных кирпичиков, для проверки победы
+        int t_counter = 0;
+        for (int i = 0; i < bricks.length - 1; i++) {
+            if (!bricks[i].isDestroyed) {
+               if (((bullet.posY + CONST.BALLSIZE == bricks[i].posY) != (bullet.posY == bricks[i].posY + CONST.HEIGHTBRICK)) &&
+                    bullet.posX + (int) CONST.BALLSIZE/2 >= bricks[i].posX &&
+                    bullet.posX + (int) CONST.BALLSIZE/2 <= bricks[i].posX + CONST.WIDTHBRICK) {
+                    bricks[i].isDestroyed = true;
+                    bullet.invert();
+                    return true;
+                }
+                if (bullet.posY + (int) CONST.BALLSIZE/2 >= bricks[i].posY && bullet.posY  <= bricks[i].posY + CONST.HEIGHTBRICK){
+                    if (bullet.posX + CONST.BALLSIZE == bricks[i].posX) {
+                        bricks[i].isDestroyed = true;
+                        bullet.bounce();
                         return true;
                     }
-                    if (bullet.posY + (int) CONST.BALLSIZE/2 >= bricks[i].posY && bullet.posY  <= bricks[i].posY + CONST.HEIGHTBRICK){
-                        if (bullet.posX + CONST.BALLSIZE == bricks[i].posX) {
-                            indexDestroyed = i;
-                            bullet.bounce();
-                            return true;
-                        }
-                        if (bullet.posX == bricks[i].posX + CONST.WIDTHBRICK) {
-                            indexDestroyed = i;
-                            bullet.bounce();
-                            return true;
-                        }
+                    if (bullet.posX == bricks[i].posX + CONST.WIDTHBRICK) {
+                        bricks[i].isDestroyed = true;
+                        bullet.bounce();
+                        return true;
                     }
-                } else {
-                    t_counter++;
                 }
+            } else {
+                t_counter++;
             }
-            if (t_counter == bricks.length - 1) {
-                isWin = true;
-            }
+        }
+        if (t_counter == bricks.length - 1) {
+            isWin = true;
         }
         return false;
     }
