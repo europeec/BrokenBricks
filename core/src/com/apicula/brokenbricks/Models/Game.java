@@ -72,17 +72,6 @@ public class Game extends ApplicationAdapter {
 		}
 	}
 
-	public int getBulletPosX () {
-		return bullet.posX;
-	}
-
-	public int getBulletPosY () {
-		return bullet.posY;
-	}
-
-	public int getMainPosX () {
-		return main.posX;
-	}
 
 	private void checkUpdate() {
 		if (!music.isPlaying) {
